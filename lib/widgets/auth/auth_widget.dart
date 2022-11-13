@@ -14,12 +14,10 @@ class _AuthWidgetState extends State<AuthWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login to your account'),
+        title: const Text('Login to your account'),
       ),
-      body: Container(
-        child: ListView(
-          children: [HeaderWidget()],
-        ),
+      body: ListView(
+        children: const [HeaderWidget()],
       ),
     );
   }
@@ -30,39 +28,39 @@ class HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(fontSize: 16);
+    const textStyle = TextStyle(fontSize: 16);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
-          _FormWidget(),
-          SizedBox(
+          const _FormWidget(),
+          const SizedBox(
             height: 25,
           ),
-          Text(
+          const Text(
             'addawadjwjdandwhwadbnkadjwnjakwdnajkwdnajkwdnajkdnajwkdbnajk addawadjwjdandwhwadbnkadjwnjakwdnajkwdnajkwdnajkdnajwkdbnajk addawadjwjdandwhwadbnkadjwnjakwdnajkwdnajkwdnajkdnajwkdbnajkv',
             style: textStyle,
           ),
           TextButton(
             onPressed: () {},
-            child: Text('Register'),
             style: AppButtonStyle.linkButton,
+            child: const Text('Register'),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
-          Text(
+          const Text(
               'addawadjwjdandwhwadbnkadjwnjakwdnajkwdnajkwdnajkdnajwkdbnajk bajw dbkja bdkj ab dkjba w kaj dja',
               style: textStyle),
           TextButton(
             onPressed: () {},
-            child: Text('Verify Email'),
             style: AppButtonStyle.linkButton,
+            child: const Text('Verify Email'),
           ),
         ],
       ),
@@ -80,7 +78,7 @@ class _FormWidget extends StatefulWidget {
 class __FormWidgetState extends State<_FormWidget> {
   final _loginTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
-  String? errorText = null;
+  String? errorText;
 
   void _auth() {
     final login = _loginTextController.text;
@@ -101,9 +99,9 @@ class __FormWidgetState extends State<_FormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(color: Color(0xFF212529), fontSize: 16);
-    final MainColor = Color(0xFF01B4E4);
-    final textFieldDecorator = InputDecoration(
+    const textStyle = TextStyle(color: Color(0xFF212529), fontSize: 16);
+    const mainColor = Color(0xFF01B4E4);
+    const textFieldDecorator = InputDecoration(
       border: OutlineInputBorder(),
       contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       isCollapsed: true,
@@ -115,31 +113,31 @@ class __FormWidgetState extends State<_FormWidget> {
         if (errorText != null) ...[
           Text(
             errorText,
-            style: TextStyle(color: Colors.red, fontSize: 17),
+            style: const TextStyle(color: Colors.red, fontSize: 17),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
         ],
-        Text(
+        const Text(
           'Username',
           style: textStyle,
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextField(
           controller: _loginTextController,
           decoration: textFieldDecorator,
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
-        Text(
+        const Text(
           'Password',
           style: textStyle,
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         TextField(
@@ -147,34 +145,34 @@ class __FormWidgetState extends State<_FormWidget> {
           obscureText: true,
           decoration: textFieldDecorator,
         ),
-        SizedBox(
+        const SizedBox(
           height: 25,
         ),
         Row(
           children: [
             TextButton(
               onPressed: _auth,
-              child: Text('Login'),
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(MainColor),
+                  backgroundColor: MaterialStateProperty.all(mainColor),
                   foregroundColor: MaterialStateProperty.all(Colors.white),
-                  textStyle: MaterialStateProperty.all(
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                  textStyle: MaterialStateProperty.all(const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w700)),
                   padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   )),
+              child: const Text('Login'),
             ),
-            SizedBox(
+            const SizedBox(
               width: 30,
             ),
             TextButton(
               onPressed: _resetPassword,
-              child: Text('Reset Password'),
               style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(MainColor),
+                foregroundColor: MaterialStateProperty.all(mainColor),
                 textStyle: MaterialStateProperty.all(
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
               ),
+              child: const Text('Reset Password'),
             ),
           ],
         )

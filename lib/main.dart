@@ -16,18 +16,18 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           appBarTheme:
-              AppBarTheme(backgroundColor: Color.fromRGBO(3, 37, 65, 1)),
+              const AppBarTheme(backgroundColor: Color.fromRGBO(3, 37, 65, 1)),
           primarySwatch: Colors.blue,
         ),
         routes: {
-          '/auth': (context) => AuthWidget(),
-          '/main_screen': (context) => MainScreenWidget(),
+          '/auth': (context) => const AuthWidget(),
+          '/main_screen': (context) => const MainScreenWidget(),
         },
         initialRoute: '/auth',
         // home: const AuthWidget(),
         onGenerateRoute: (RouteSettings routesettings) {
           return MaterialPageRoute<void>(builder: (context) {
-            return Scaffold(
+            return const Scaffold(
               body: Center(child: Text('Произошла ошибка навигации')),
             );
           });

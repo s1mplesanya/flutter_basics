@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 abstract class AppButtonStyle {
-  final MainColor = Color(0xFF01B4E4);
+  final mainColor = const Color(0xFF01B4E4);
 
   static final ButtonStyle linkButton = ButtonStyle(
-    foregroundColor: MaterialStateProperty.all(Color(0xFF01B4E4)),
+    foregroundColor: MaterialStateProperty.all(const Color(0xFF01B4E4)),
     textStyle: MaterialStateProperty.all(
-        TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
+        const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
   );
 }

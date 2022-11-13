@@ -12,7 +12,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TMDB'),
+        title: const Text('TMDB'),
       ),
     );
   }
