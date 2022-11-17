@@ -8,12 +8,40 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
+  int _selectedPage = 0;
+
+  void onSelectPage(int index) {
+    if (_selectedPage == index) return;
+    setState(() {
+      _selectedPage = index;
+    });
+  }
+
+  static const List<Widget> pages = <Widget>[
+    Text('Новости'),
+    Text('Фильмы'),
+    Text('Сериалы'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('TMDB'),
       ),
+      body: Center(
+        child: pages[_selectedPage],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedPage,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.newspaper), label: "Новости"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.movie_filter), label: "Фильмы"),
+            BottomNavigationBarItem(icon: Icon(Icons.tv), label: "Сериалы"),
+          ],
+          onTap: onSelectPage),
     );
   }
 }

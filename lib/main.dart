@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lesson3/Theme/app_colors.dart';
 import 'package:lesson3/widgets/auth/auth_widget.dart';
 import 'package:lesson3/widgets/mainScreen/main_screen_widget.dart';
 
@@ -13,25 +14,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
+      title: 'Flutter Demo',
+      theme: ThemeData(
           appBarTheme:
-              const AppBarTheme(backgroundColor: Color.fromRGBO(3, 37, 65, 1)),
+              const AppBarTheme(backgroundColor: AppColors.mainDarkBlue),
           primarySwatch: Colors.blue,
-        ),
-        routes: {
-          '/auth': (context) => const AuthWidget(),
-          '/main_screen': (context) => const MainScreenWidget(),
-        },
-        initialRoute: '/auth',
-        // home: const AuthWidget(),
-        onGenerateRoute: (RouteSettings routesettings) {
-          return MaterialPageRoute<void>(builder: (context) {
-            return const Scaffold(
-              body: Center(child: Text('Произошла ошибка навигации')),
-            );
-          });
-        });
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: AppColors.mainDarkBlue),
+          selectedRowColor: Colors.white,
+          unselectedWidgetColor: Colors.grey),
+
+      routes: {
+        '/auth': (context) => const AuthWidget(),
+        '/main_screen': (context) => const MainScreenWidget(),
+      },
+      initialRoute: '/auth',
+      // home: const AuthWidget(),
+      // onGenerateRoute: (RouteSettings routesettings) {
+      //   return MaterialPageRoute<void>(builder: (context) {
+      //     return const Scaffold(
+      //       body: Center(child: Text('Произошла ошибка навигации')),
+      //     );
+      //   });
+      // }
+    );
   }
 }
 
