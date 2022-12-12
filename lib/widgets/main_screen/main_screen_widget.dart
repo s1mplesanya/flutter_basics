@@ -19,20 +19,19 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     });
   }
 
-  static const List<Widget> pages = <Widget>[
-    Text('Новости'),
-    MovieListWidget(),
-    Text('Сериалы'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('TMDB'),
       ),
-      body: Center(
-        child: pages[_selectedPage],
+      body: IndexedStack(
+        index: _selectedPage,
+        children: [
+          Text('Новости'),
+          MovieListWidget(),
+          Text('Сериалы'),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedPage,
