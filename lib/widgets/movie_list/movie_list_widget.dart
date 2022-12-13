@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Movie {
+  final int id;
   final String imageName;
   final String title;
   final String time;
   final String description;
 
   Movie(
-      {required this.imageName,
+      {required this.id,
+      required this.imageName,
       required this.title,
       required this.time,
       required this.description});
@@ -23,17 +25,20 @@ class MovieListWidget extends StatefulWidget {
 class _MovieListWidgetState extends State<MovieListWidget> {
   final _movies = {
     Movie(
+        id: 1,
         imageName: 'image1',
-        title: 'Wednesday',
-        time: '31 октября 2022',
+        title: 'Назад в будущее',
+        time: '1985 год',
         description:
-            'Уэнсдэй, дочь Гомеса и Мортиши Аддамс, учится в академии Nevermore. Ей предстоит освоить экстрасенсорные способности, чтобы остановить местного серийного убийцу и раскрыть тайну родителей.'),
+            'Подросток Марти с помощью машины времени, сооружённой его другом-профессором доком Брауном, попадает из 80-х в далекие 50-е. Там он встречается со своими будущими родителями, ещё подростками, и другом-профессором, совсем молодым.'),
     Movie(
+        id: 2,
+        // imageName: AppImages.moviePlaceholder,
         imageName: 'image1',
-        title: 'Monastir',
-        time: '19 ноября 2022',
+        title: 'Шрэк',
+        time: '2001 год',
         description:
-            'Мария — обаятельная тусовщица, которая живёт за чужой счёт. Однажды в Эмиратах она едет в ночной клуб вместе с женой миллиардера, вечеринка выходит из-под контроля, и теперь Марии грозит тюрьма, её преследуют опасные люди, а счета оказываются заблокированы. Приходится бежать в Россию, но и дома она не в безопасности — и девушка укрывается в стенах монастыря.'),
+            'Жил да был в сказочном государстве большой зеленый великан по имени Шрэк. Жил он в гордом одиночестве в лесу, на болоте, которое считал своим. Но однажды злобный коротышка — лорд Фаркуад, правитель волшебного королевства, безжалостно согнал на Шрэково болото всех сказочных обитателей. \nИ беспечной жизни зеленого великана пришел конец. Но лорд Фаркуад пообещал вернуть Шрэку болото, если великан добудет ему прекрасную принцессу Фиону, которая томится в неприступной башне, охраняемой огнедышащим драконом.'),
   };
   var _filteredMovies = <Movie>[];
 
@@ -58,6 +63,12 @@ class _MovieListWidgetState extends State<MovieListWidget> {
 
     _filteredMovies = _movies.toList();
     _searchController.addListener(_searchMovies);
+  }
+
+  void _onMovieTap(int index) {
+    final id = _movies.toList()[index].id;
+    Navigator.of(context)
+        .pushNamed('/main_screen/movie_details', arguments: id);
   }
 
   @override
@@ -141,7 +152,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      onTap: () {},
+                      onTap: () => _onMovieTap(index),
                     ),
                   )
                 ],
