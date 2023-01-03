@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../library/widgets/inherited/notifier_provider.dart';
 import '../widgets/auth/auth_model.dart';
 import '../widgets/auth/auth_widget.dart';
 import '../widgets/main_screen/main_screen_widget.dart';
@@ -16,7 +17,7 @@ class MainNavigation {
       ? MainNavigationRoutesName.mainScreen
       : MainNavigationRoutesName.auth;
   final routes = <String, Widget Function(BuildContext)>{
-    MainNavigationRoutesName.auth: (context) => AuthProvider(
+    MainNavigationRoutesName.auth: (context) => NotifierProvider(
           model: AuthModel(),
           child: const AuthWidget(),
         ),
