@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lesson3/domain/data_providers/session_data_provider.dart';
 
 import '../movie_list/movie_list_widget.dart';
 
@@ -24,6 +25,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('TMDB'),
+        actions: [
+          IconButton(
+              onPressed: () => SessionDataProvider().setSessionId(null),
+              icon: const Icon(Icons.logout)),
+        ],
       ),
       body: IndexedStack(
         index: _selectedPage,

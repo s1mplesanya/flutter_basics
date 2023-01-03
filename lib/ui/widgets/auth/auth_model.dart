@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lesson3/domain/api_client/api_client.dart';
 import 'package:lesson3/domain/data_providers/session_data_provider.dart';
+import 'package:lesson3/ui/navigator/main_navigator.dart';
 
 class AuthModel extends ChangeNotifier {
   final _apiClient = ApiClient();
@@ -36,6 +37,7 @@ class AuthModel extends ChangeNotifier {
       sessionId = await _apiClient.auth(username: login, password: password);
     } catch (e) {
       _errorMessage = 'Неправильный логин или пароль!';
+      print(e);
     }
 
     _isAuthProgress = false;
@@ -51,7 +53,8 @@ class AuthModel extends ChangeNotifier {
 
     await _sessionDataProvider.setSessionId(sessionId);
 
-    unawaited(Navigator.of(context).pushNamed('/main_screen'));
+    unawaited(Navigator.of(context)
+        .pushReplacementNamed(MainNavigationRoutesName.mainScreen));
   }
 }
 
