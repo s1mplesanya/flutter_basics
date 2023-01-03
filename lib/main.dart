@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lesson3/Theme/app_colors.dart';
-import 'package:lesson3/widgets/auth/auth_widget.dart';
-import 'package:lesson3/widgets/main_screen/main_screen_widget.dart';
-import 'package:lesson3/widgets/movie_details/movie_details_widget.dart';
+import 'package:lesson3/ui/widgets/auth/auth_model.dart';
+import 'package:lesson3/ui/widgets/auth/auth_widget.dart';
+import 'package:lesson3/ui/widgets/main_screen/main_screen_widget.dart';
+import 'package:lesson3/ui/widgets/movie_details/movie_details_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
           unselectedWidgetColor: Colors.grey),
 
       routes: {
-        '/auth': (context) => const AuthWidget(),
+        '/auth': (context) => AuthProvider(
+              model: AuthModel(),
+              child: AuthWidget(),
+            ),
         '/main_screen': (context) => const MainScreenWidget(),
         '/main_screen/movie_details': (context) {
           final arguments = ModalRoute.of(context)?.settings.arguments;

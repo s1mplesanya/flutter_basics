@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lesson3/ui/widgets/movie_details/movie_details_screen_cast_widget.dart';
 
 import 'movie_details_main_info_widget.dart';
 
@@ -15,13 +16,17 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wednesday'),
+        title: const Text('Шрэк'),
       ),
       body: ColoredBox(
         color: const Color.fromRGBO(24, 23, 27, 1.0),
         child: ListView(
-          children: [
+          children: const [
             MovieDetailsMainInfoWidget(),
+            SizedBox(
+              height: 20,
+            ),
+            MovieDetailsScreenCastWidget(),
           ],
         ),
       ),
