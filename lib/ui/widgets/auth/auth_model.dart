@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:lesson3/domain/api_client/api_client.dart';
@@ -24,7 +25,7 @@ class AuthModel extends ChangeNotifier {
     final password = passwordTextController.text;
 
     if (login.isEmpty || password.isEmpty) {
-      _errorMessage = 'Заполните логин и пароль';
+      _errorMessage = 'Заполните логин и пароль!';
       notifyListeners();
       return;
     }
@@ -35,9 +36,19 @@ class AuthModel extends ChangeNotifier {
     String? sessionId;
     try {
       sessionId = await _apiClient.auth(username: login, password: password);
-    } catch (e) {
-      _errorMessage = 'Неправильный логин или пароль!';
-      print(e);
+    } on ApiClientException catch (e) {
+      switch (e.type) {
+        case ApiClientExceptionType.network:
+          _errorMessage =
+              'Сервер не доступен, проверьте подключение к интернету!';
+          break;
+        case ApiClientExceptionType.auth:
+          _errorMessage = 'Неверный логин или пароль!';
+          break;
+        case ApiClientExceptionType.other:
+          _errorMessage = 'Произошла ошибка, попробуйте ещё!';
+          break;
+      }
     }
 
     _isAuthProgress = false;
