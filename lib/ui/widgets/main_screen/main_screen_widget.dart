@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lesson3/domain/data_providers/session_data_provider.dart';
+import 'package:lesson3/library/widgets/inherited/notifier_provider.dart';
+import 'package:lesson3/ui/widgets/movie_list/movie_list_model.dart';
 
 import '../movie_list/movie_list_widget.dart';
 
@@ -13,11 +15,24 @@ class MainScreenWidget extends StatefulWidget {
 class _MainScreenWidgetState extends State<MainScreenWidget> {
   int _selectedPage = 0;
 
+  final movieListModel = MovieListModel();
+
   void onSelectPage(int index) {
     if (_selectedPage == index) return;
     setState(() {
       _selectedPage = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    movieListModel.setUpLocale(context);
   }
 
   @override
@@ -34,9 +49,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       body: IndexedStack(
         index: _selectedPage,
         children: [
-          Text('Новости'),
-          MovieListWidget(),
-          Text('Сериалы'),
+          const Text('Новости'),
+          NotifierProvider(model: movieListModel, child: MovieListWidget()),
+          const Text('Сериалы'),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

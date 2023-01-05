@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:lesson3/domain/entity/popular_movie_response.dart';
+
 enum ApiClientExceptionType {
   network,
   auth,
@@ -18,6 +20,8 @@ class ApiClient {
   static const _host = 'https://api.themoviedb.org/3';
   static const _imageUrl = 'https://image.tmdb.org/t/p/w500';
   static const _apiKey = '9736dcef3dbde044a3baa66f5c0b4783';
+
+  static String imageUrl(String path) => _imageUrl + path;
 
   Future<String> auth({
     required String username,
@@ -152,6 +156,22 @@ class ApiClient {
         throw ApiClientException(ApiClientExceptionType.other);
       }
     }
+  }
+
+  Future<PopularMovieResponse> getPopularMovies(
+      int page, String language) async {
+    parser(dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final response = PopularMovieResponse.fromJson(jsonMap);
+      return response;
+    }
+
+    final result = _get('/movie/popular', parser, <String, dynamic>{
+      'api_key': _apiKey,
+      'language': language,
+      'page': page.toString(),
+    });
+    return result;
   }
 }
 
