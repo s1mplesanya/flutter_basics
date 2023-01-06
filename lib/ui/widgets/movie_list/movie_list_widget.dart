@@ -22,10 +22,9 @@ class MovieListWidget extends StatelessWidget {
           itemCount: model.movies.length,
           itemExtent: 163,
           itemBuilder: (BuildContext context, int index) {
+            model.showMovieAtIndex(index);
             final movie = model.movies[index];
             final posterPath = movie.posterPath;
-            final releaseDate = movie.releaseDate;
-
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Stack(
@@ -77,8 +76,7 @@ class MovieListWidget extends StatelessWidget {
                                 height: 5,
                               ),
                               Text(
-                                model.stringFromDate(releaseDate),
-                                // movie.releaseDate?.toString() ?? 'no date',
+                                model.stringFromDate(movie.releaseDate),
                                 style: const TextStyle(color: Colors.grey),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -115,6 +113,7 @@ class MovieListWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextField(
+            onChanged: model.searchMovie,
             // controller: _searchController,
             decoration: InputDecoration(
                 labelText: 'Поиск',
