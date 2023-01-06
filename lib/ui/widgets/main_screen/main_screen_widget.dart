@@ -50,7 +50,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         index: _selectedPage,
         children: [
           const Text('Новости'),
-          NotifierProvider(model: movieListModel, child: MovieListWidget()),
+          NotifierProvider(
+            create: () => movieListModel,
+            child: MovieListWidget(),
+            isManagingModel: false,
+          ),
           const Text('Сериалы'),
         ],
       ),
