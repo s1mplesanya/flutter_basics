@@ -27,6 +27,9 @@ class MovieDetailsModel extends ChangeNotifier {
     await getMovieDetails();
   }
 
+  String stringFromDate(DateTime dateTime) =>
+      dateTime != null ? _dateFormat.format(dateTime) : '';
+
   Future<void> getMovieDetails() async {
     _movieDetails = await _apiClient.movieDetails(movieId, _locale);
     notifyListeners();

@@ -25,17 +25,9 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
       appBar: AppBar(
         title: const _TitleAppBarWidget(),
       ),
-      body: ColoredBox(
-        color: const Color.fromRGBO(24, 23, 27, 1.0),
-        child: ListView(
-          children: const [
-            MovieDetailsMainInfoWidget(),
-            SizedBox(
-              height: 20,
-            ),
-            MovieDetailsScreenCastWidget(),
-          ],
-        ),
+      body: const ColoredBox(
+        color: Color.fromRGBO(24, 23, 27, 1.0),
+        child: _BodyWidget(),
       ),
     );
   }
@@ -48,5 +40,27 @@ class _TitleAppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = NotifierProvider.watch<MovieDetailsModel>(context);
     return Text(model?.movieDetails?.title ?? 'Loading...');
+  }
+}
+
+class _BodyWidget extends StatelessWidget {
+  const _BodyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final model = NotifierProvider.watch<MovieDetailsModel>(context);
+    final movieDetails = model?.movieDetails;
+    if (movieDetails == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    return ListView(
+      children: const [
+        MovieDetailsMainInfoWidget(),
+        SizedBox(
+          height: 20,
+        ),
+        MovieDetailsScreenCastWidget(),
+      ],
+    );
   }
 }
