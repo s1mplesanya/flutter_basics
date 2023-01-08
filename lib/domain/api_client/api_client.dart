@@ -201,6 +201,7 @@ class ApiClient {
     }
 
     final result = _get('/movie/$movieId', parser, <String, dynamic>{
+      'append_to_response': 'credits, videos',
       'api_key': _apiKey,
       'language': language,
     });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lesson3/ui/widgets/movie_details/movie_details_model.dart';
+import 'package:lesson3/ui/widgets/movie_trailer/movie_trailer_widget.dart';
 
 import '../../library/widgets/inherited/notifier_provider.dart';
 import '../widgets/auth/auth_model.dart';
@@ -11,6 +12,7 @@ class MainNavigationRoutesName {
   static const auth = 'auth';
   static const mainScreen = '/';
   static const movieDetails = '/movie_details';
+  static const movieTrailer = '/movie_details/trailer';
 }
 
 class MainNavigation {
@@ -35,6 +37,14 @@ class MainNavigation {
                   create: () => MovieDetailsModel(movieId: movieId),
                   child: const MovieDetailsWidget(),
                 ));
+      case MainNavigationRoutesName.movieTrailer:
+        final arguments = settings.arguments;
+        final youtubeKey = arguments is String ? arguments : '';
+        return MaterialPageRoute(
+            builder: (context) => MovieTrailerWidget(
+                  youtubeKey: youtubeKey,
+                ));
+
       default:
         const widget = Text('Nagivation error!');
         return MaterialPageRoute(builder: (context) => widget);
