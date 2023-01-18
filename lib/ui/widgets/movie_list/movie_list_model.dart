@@ -9,7 +9,7 @@ import 'package:lesson3/ui/navigator/main_navigator.dart';
 import '../../../domain/entity/movie.dart';
 
 class MovieListModel extends ChangeNotifier {
-  final _apiClient = ApiClient();
+  final _apiClient = MovieApiClient();
   final _movies = <Movie>[];
 
   List<Movie> get movies => List.unmodifiable(_movies);

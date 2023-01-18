@@ -1,13 +1,15 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:lesson3/domain/api_client/api_client.dart';
+import 'package:lesson3/domain/api_client/account_api_client.dart';
+import 'package:lesson3/domain/api_client/api_client_exteption.dart';
+import 'package:lesson3/domain/api_client/auth_api_client.dart';
 import 'package:lesson3/domain/data_providers/session_data_provider.dart';
 import 'package:lesson3/ui/navigator/main_navigator.dart';
 
 class AuthModel extends ChangeNotifier {
-  final _apiClient = ApiClient();
+  final _authApiClient = AuthApiClient();
+  final _accountApiClient = AccountApiClient();
   final _sessionDataProvider = SessionDataProvider();
 
   final loginTextController = TextEditingController();
@@ -36,8 +38,9 @@ class AuthModel extends ChangeNotifier {
     String? sessionId;
     int? accountId;
     try {
-      sessionId = await _apiClient.auth(username: login, password: password);
-      accountId = await _apiClient.getAccountInfo(sessionId);
+      sessionId =
+          await _authApiClient.auth(username: login, password: password);
+      accountId = await _accountApiClient.getAccountInfo(sessionId);
     } on ApiClientException catch (e) {
       switch (e.type) {
         case ApiClientExceptionType.network:
@@ -48,6 +51,9 @@ class AuthModel extends ChangeNotifier {
           _errorMessage = 'Неверный логин или пароль!';
           break;
         case ApiClientExceptionType.other:
+          _errorMessage = 'Произошла ошибка, попробуйте ещё!';
+          break;
+        case ApiClientExceptionType.sessionExpired:
           _errorMessage = 'Произошла ошибка, попробуйте ещё!';
           break;
       }
@@ -71,27 +77,3 @@ class AuthModel extends ChangeNotifier {
         .pushReplacementNamed(MainNavigationRoutesName.mainScreen));
   }
 }
-
-// class AuthProvider extends InheritedNotifier {
-//   final AuthModel model;
-//   const AuthProvider({
-//     Key? key,
-//     required this.model,
-//     required Widget child,
-//   }) : super(
-//           key: key,
-//           notifier: model,
-//           child: child,
-//         );
-
-//   static AuthProvider? watch(BuildContext context) {
-//     return context.dependOnInheritedWidgetOfExactType<AuthProvider>();
-//   }
-
-//   static AuthProvider? read(BuildContext context) {
-//     final widget =
-//         context.getElementForInheritedWidgetOfExactType<AuthProvider>()?.widget;
-//     return widget is AuthProvider ? widget : null;
-//   }
-// }
-

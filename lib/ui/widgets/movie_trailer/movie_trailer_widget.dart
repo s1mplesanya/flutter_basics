@@ -3,7 +3,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieTrailerWidget extends StatefulWidget {
   final String youtubeKey;
-  MovieTrailerWidget({super.key, required this.youtubeKey});
+  const MovieTrailerWidget({super.key, required this.youtubeKey});
 
   @override
   State<MovieTrailerWidget> createState() => _MovieTrailerWidgetState();

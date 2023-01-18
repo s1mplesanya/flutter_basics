@@ -10,7 +10,7 @@ class Movie {
   final String overview;
   @JsonKey(fromJson: parseMovieDateFromString)
   final DateTime? releaseDate;
-  final List<int> genre_ids;
+  final List<int> genreIds;
   final int id;
   final String originalTitle;
   final String originalLanguage;
@@ -26,7 +26,7 @@ class Movie {
     required this.adult,
     required this.overview,
     required this.releaseDate,
-    required this.genre_ids,
+    required this.genreIds,
     required this.id,
     required this.originalTitle,
     required this.originalLanguage,

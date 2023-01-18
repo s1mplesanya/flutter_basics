@@ -19,14 +19,14 @@ class _AuthWidgetState extends State<AuthWidget> {
         title: const Text('Login to your account'),
       ),
       body: ListView(
-        children: const [HeaderWidget()],
+        children: const [_HeaderWidget()],
       ),
     );
   }
 }
 
-class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({super.key});
+class _HeaderWidget extends StatelessWidget {
+  const _HeaderWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class HeaderWidget extends StatelessWidget {
 }
 
 class _FormWidget extends StatelessWidget {
-  const _FormWidget({super.key});
+  const _FormWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -139,13 +139,11 @@ class _FormWidget extends StatelessWidget {
 }
 
 class _AuthButtonWidget extends StatelessWidget {
-  const _AuthButtonWidget({
-    super.key,
-  });
+  const _AuthButtonWidget();
 
   @override
   Widget build(BuildContext context) {
-    final mainColor = Color(0xFF01B4E4);
+    const mainColor = Color(0xFF01B4E4);
     final model = NotifierProvider.watch<AuthModel>(context);
     final onPressed =
         model?.canStartAuth == true ? () => model?.auth(context) : null;
@@ -174,7 +172,7 @@ class _AuthButtonWidget extends StatelessWidget {
 }
 
 class _ErrorMessageWidget extends StatelessWidget {
-  const _ErrorMessageWidget({super.key});
+  const _ErrorMessageWidget();
 
   @override
   Widget build(BuildContext context) {

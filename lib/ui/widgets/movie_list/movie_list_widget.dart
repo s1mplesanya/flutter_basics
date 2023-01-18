@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:lesson3/domain/api_client/image_dowloader.dart';
 import 'package:lesson3/library/widgets/inherited/notifier_provider.dart';
-import 'package:lesson3/ui/navigator/main_navigator.dart';
 import 'package:lesson3/ui/widgets/movie_list/movie_list_model.dart';
-
-import '../../../domain/api_client/api_client.dart';
 
 class MovieListWidget extends StatelessWidget {
   const MovieListWidget({super.key});
@@ -48,7 +45,7 @@ class MovieListWidget extends StatelessWidget {
                       children: [
                         posterPath != null
                             ? Image.network(
-                                ApiClient.imageUrl(posterPath),
+                                ImageDownloader.imageUrl(posterPath),
                                 width: 95,
                               )
                             : const SizedBox.shrink(),

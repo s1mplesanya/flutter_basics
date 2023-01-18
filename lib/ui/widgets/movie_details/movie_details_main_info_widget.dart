@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lesson3/domain/api_client/api_client.dart';
+import 'package:lesson3/domain/api_client/image_dowloader.dart';
 import 'package:lesson3/domain/entity/movie_details_credits.dart';
 import 'package:lesson3/ui/navigator/main_navigator.dart';
 import 'package:lesson3/ui/widgets/movie_details/movie_details_model.dart';
@@ -40,7 +40,7 @@ class MovieDetailsMainInfoWidget extends StatelessWidget {
 }
 
 class _OverViewWidget extends StatelessWidget {
-  const _OverViewWidget({super.key});
+  const _OverViewWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _OverViewWidget extends StatelessWidget {
 }
 
 class _DescriptionWidget extends StatelessWidget {
-  const _DescriptionWidget({super.key});
+  const _DescriptionWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -65,20 +65,20 @@ class _DescriptionWidget extends StatelessWidget {
 }
 
 class _TopPosters extends StatelessWidget {
-  const _TopPosters({super.key});
+  const _TopPosters();
 
   @override
   Widget build(BuildContext context) {
     final model = NotifierProvider.watch<MovieDetailsModel>(context);
     final backdropPath = model?.movieDetails?.backdropPath;
     final posterPath = model?.movieDetails?.posterPath;
-    ApiClient.imageUrl(backdropPath ?? '');
+    ImageDownloader.imageUrl(backdropPath ?? '');
     return AspectRatio(
       aspectRatio: 390 / 219,
       child: Stack(
         children: [
           backdropPath != null
-              ? Image.network(ApiClient.imageUrl(backdropPath))
+              ? Image.network(ImageDownloader.imageUrl(backdropPath))
               : const SizedBox.shrink(),
           const SizedBox(height: 150, child: Placeholder()),
           Positioned(
@@ -89,7 +89,7 @@ class _TopPosters extends StatelessWidget {
               width: 80,
               height: 120,
               child: posterPath != null
-                  ? Image.network(ApiClient.imageUrl(posterPath))
+                  ? Image.network(ImageDownloader.imageUrl(posterPath))
                   : const SizedBox.shrink(),
             ),
           ),
@@ -110,7 +110,7 @@ class _TopPosters extends StatelessWidget {
 }
 
 class _MovieNameWidget extends StatelessWidget {
-  const _MovieNameWidget({super.key});
+  const _MovieNameWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +138,7 @@ class _MovieNameWidget extends StatelessWidget {
 }
 
 class _ScoreWidget extends StatelessWidget {
-  const _ScoreWidget({super.key});
+  const _ScoreWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +205,7 @@ class _ScoreWidget extends StatelessWidget {
 }
 
 class _SummaryWidget extends StatelessWidget {
-  const _SummaryWidget({super.key});
+  const _SummaryWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +250,7 @@ class _SummaryWidget extends StatelessWidget {
 }
 
 class _PeopleWidget extends StatelessWidget {
-  const _PeopleWidget({super.key});
+  const _PeopleWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +279,7 @@ class _PeopleWidget extends StatelessWidget {
 
 class _PeopleWidgetRow extends StatelessWidget {
   final List<Employee> employes;
-  const _PeopleWidgetRow({super.key, required this.employes});
+  const _PeopleWidgetRow({required this.employes});
 
   @override
   Widget build(BuildContext context) {
@@ -295,7 +295,7 @@ class _PeopleWidgetRow extends StatelessWidget {
 
 class _PeopleWidgetRowItem extends StatelessWidget {
   final Employee employee;
-  const _PeopleWidgetRowItem({super.key, required this.employee});
+  const _PeopleWidgetRowItem({required this.employee});
 
   @override
   Widget build(BuildContext context) {

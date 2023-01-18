@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lesson3/domain/api_client/api_client.dart';
+import 'package:lesson3/domain/api_client/image_dowloader.dart';
 import 'package:lesson3/ui/widgets/movie_details/movie_details_model.dart';
 
 import '../../../library/widgets/inherited/notifier_provider.dart';
@@ -39,9 +39,7 @@ class MovieDetailsScreenCastWidget extends StatelessWidget {
 }
 
 class _ActorsListWidget extends StatelessWidget {
-  const _ActorsListWidget({
-    super.key,
-  });
+  const _ActorsListWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +59,6 @@ class _ActorsListWidget extends StatelessWidget {
 class _ActorListItemWidget extends StatelessWidget {
   final int actorIndex;
   const _ActorListItemWidget({
-    super.key,
     required this.actorIndex,
   });
 
@@ -91,7 +88,7 @@ class _ActorListItemWidget extends StatelessWidget {
               children: [
                 profilePath != null
                     ? Image.network(
-                        ApiClient.imageUrl(profilePath),
+                        ImageDownloader.imageUrl(profilePath),
                         width: 120,
                         height: 120,
                         fit: BoxFit.fitWidth,
