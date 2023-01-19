@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lesson3/Theme/app_button_style.dart';
 import 'package:lesson3/ui/widgets/auth/auth_model.dart';
+import 'package:provider/provider.dart';
 
-import '../../../library/widgets/inherited/notifier_provider.dart';
-
-class AuthWidget extends StatefulWidget {
+class AuthWidget extends StatelessWidget {
   const AuthWidget({super.key});
 
-  @override
-  State<AuthWidget> createState() => _AuthWidgetState();
-}
-
-class _AuthWidgetState extends State<AuthWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +13,9 @@ class _AuthWidgetState extends State<AuthWidget> {
         title: const Text('Login to your account'),
       ),
       body: ListView(
-        children: const [_HeaderWidget()],
+        children: const [
+          _HeaderWidget(),
+        ],
       ),
     );
   }
@@ -75,7 +71,7 @@ class _FormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.read<AuthModel>(context);
+    final model = context.read<AuthViewModel>();
     const textStyle = TextStyle(color: Color(0xFF212529), fontSize: 16);
     const mainColor = Color(0xFF01B4E4);
     const textFieldDecorator = InputDecoration(
@@ -144,10 +140,9 @@ class _AuthButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const mainColor = Color(0xFF01B4E4);
-    final model = NotifierProvider.watch<AuthModel>(context);
-    final onPressed =
-        model?.canStartAuth == true ? () => model?.auth(context) : null;
-    final child = model?.isAuthProgress == true
+    final model = context.watch<AuthViewModel>();
+    final onPressed = model.canStartAuth ? () => model.auth(context) : null;
+    final child = model.isAuthProgress
         ? const SizedBox(
             width: 16,
             height: 16,
@@ -177,7 +172,7 @@ class _ErrorMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final errorMessage =
-        NotifierProvider.watch<AuthModel>(context)?.errorMessage;
+        context.select((AuthViewModel model) => model.errorMessage);
     if (errorMessage == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),

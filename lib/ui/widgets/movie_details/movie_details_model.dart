@@ -5,7 +5,7 @@ import 'package:lesson3/domain/api_client/api_client_exteption.dart';
 import 'package:lesson3/domain/data_providers/session_data_provider.dart';
 import 'package:lesson3/domain/entity/movie_details.dart';
 
-import '../../../domain/api_client/api_client.dart';
+import '../../../domain/api_client/movie_api_client.dart';
 
 class MovieDetailsModel extends ChangeNotifier {
   final _sessionDataProvider = SessionDataProvider();

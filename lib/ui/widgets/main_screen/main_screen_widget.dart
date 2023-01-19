@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lesson3/domain/data_providers/session_data_provider.dart';
-import 'package:lesson3/library/widgets/inherited/notifier_provider.dart';
-import 'package:lesson3/ui/widgets/movie_list/movie_list_model.dart';
-
-import '../movie_list/movie_list_widget.dart';
+import 'package:lesson3/domain/factories/screen_factory.dart';
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({super.key});
@@ -15,7 +12,7 @@ class MainScreenWidget extends StatefulWidget {
 class _MainScreenWidgetState extends State<MainScreenWidget> {
   int _selectedPage = 0;
 
-  final movieListModel = MovieListModel();
+  final _screenFactory = ScreenFactory();
 
   void onSelectPage(int index) {
     if (_selectedPage == index) return;
@@ -27,12 +24,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    movieListModel.setUpLocale(context);
   }
 
   @override
@@ -49,13 +40,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       body: IndexedStack(
         index: _selectedPage,
         children: [
-          const Text('Новости'),
-          NotifierProvider(
-            create: () => movieListModel,
-            isManagingModel: false,
-            child: const MovieListWidget(),
-          ),
-          const Text('Сериалы'),
+          _screenFactory.makeNewsList(),
+          _screenFactory.makeMovieList(),
+          _screenFactory.makeSeriesList(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
