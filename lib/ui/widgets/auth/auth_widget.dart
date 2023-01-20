@@ -91,7 +91,7 @@ class _FormWidget extends StatelessWidget {
           height: 5,
         ),
         TextField(
-          controller: model?.loginTextController,
+          controller: model.loginTextController,
           decoration: textFieldDecorator,
         ),
         const SizedBox(
@@ -105,7 +105,7 @@ class _FormWidget extends StatelessWidget {
           height: 5,
         ),
         TextField(
-          controller: model?.passwordTextController,
+          controller: model.passwordTextController,
           obscureText: true,
           decoration: textFieldDecorator,
         ),

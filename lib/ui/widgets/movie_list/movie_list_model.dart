@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lesson3/domain/entity/movie.dart';
 
 import 'package:lesson3/domain/services/movie_service.dart';
 import 'package:lesson3/library/widgets/paginator.dart';
 import 'package:lesson3/ui/navigator/main_navigator.dart';
-
-import '../../../domain/entity/movie.dart';
 
 class MovieListRowData {
   final int id;

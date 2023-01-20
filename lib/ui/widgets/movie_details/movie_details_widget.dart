@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lesson3/library/widgets/inherited/notifier_provider.dart';
-import 'package:lesson3/my_app/my_app_model.dart';
 import 'package:lesson3/ui/widgets/movie_details/movie_details_model.dart';
 import 'package:lesson3/ui/widgets/movie_details/movie_details_screen_cast_widget.dart';
+import 'package:provider/provider.dart';
 
 import 'movie_details_main_info_widget.dart';
 
@@ -15,18 +14,10 @@ class MovieDetailsWidget extends StatefulWidget {
 
 class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
   @override
-  void initState() {
-    super.initState();
-    final model = NotifierProvider.read<MovieDetailsModel>(context);
-
-    final appModel = Provider.read<MyAppModel>(context);
-    model?.onSessionExpired = () => appModel?.resetSession(context);
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    NotifierProvider.read<MovieDetailsModel>(context)?.setUpLocale(context);
+    Future.microtask(
+        () => context.read<MovieDetailsModel>().setUpLocale(context));
   }
 
   @override
@@ -48,8 +39,8 @@ class _TitleAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MovieDetailsModel>(context);
-    return Text(model?.movieDetails?.title ?? 'Loading...');
+    final title = context.select((MovieDetailsModel model) => model.data.title);
+    return Text(title);
   }
 }
 
@@ -58,9 +49,9 @@ class _BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MovieDetailsModel>(context);
-    final movieDetails = model?.movieDetails;
-    if (movieDetails == null) {
+    final isLoading =
+        context.select((MovieDetailsModel model) => model.data.isLoading);
+    if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
     return ListView(

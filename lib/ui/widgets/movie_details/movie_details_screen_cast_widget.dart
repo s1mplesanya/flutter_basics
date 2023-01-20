@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lesson3/domain/api_client/image_dowloader.dart';
 import 'package:lesson3/ui/widgets/movie_details/movie_details_model.dart';
-
-import '../../../library/widgets/inherited/notifier_provider.dart';
+import 'package:provider/provider.dart';
 
 class MovieDetailsScreenCastWidget extends StatelessWidget {
   const MovieDetailsScreenCastWidget({super.key});
@@ -43,11 +42,11 @@ class _ActorsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.watch<MovieDetailsModel>(context);
-    var cast = model?.movieDetails?.credits.cast;
-    if (cast == null || cast.isEmpty) return const SizedBox.shrink();
+    var data =
+        context.select((MovieDetailsModel model) => model.data.actorsData);
+    if (data.isEmpty) return const SizedBox.shrink();
     return ListView.builder(
-        itemCount: 10,
+        itemCount: data.length,
         itemExtent: 120,
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
@@ -64,9 +63,10 @@ class _ActorListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = NotifierProvider.read<MovieDetailsModel>(context);
-    final actor = model!.movieDetails!.credits.cast[actorIndex];
+    final model = context.read<MovieDetailsModel>();
+    final actor = model.data.actorsData[actorIndex];
     final profilePath = actor.profilePath;
+
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: DecoratedBox(
@@ -86,14 +86,13 @@ class _ActorListItemWidget extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: Column(
               children: [
-                profilePath != null
-                    ? Image.network(
-                        ImageDownloader.imageUrl(profilePath),
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit.fitWidth,
-                      )
-                    : const SizedBox.shrink(),
+                if (profilePath != null)
+                  Image.network(
+                    ImageDownloader.imageUrl(profilePath),
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.fitWidth,
+                  ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
