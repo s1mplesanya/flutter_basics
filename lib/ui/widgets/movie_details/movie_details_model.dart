@@ -1,27 +1,37 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:lesson3/domain/api_client/account_api_client.dart';
 import 'package:lesson3/domain/api_client/api_client_exteption.dart';
-import 'package:lesson3/domain/data_providers/session_data_provider.dart';
 import 'package:lesson3/domain/entity/movie_details.dart';
-import 'package:lesson3/domain/entity/movie_details_credits.dart';
 import 'package:lesson3/domain/services/auth_service.dart';
+import 'package:lesson3/domain/services/movie_service.dart';
+import 'package:lesson3/library/widgets/localized_model.dart';
 import 'package:lesson3/ui/navigator/main_navigator.dart';
-
-import '../../../domain/api_client/movie_api_client.dart';
 
 class MovieDetailsPosterData {
   final String? backdropPath;
   final String? posterPath;
-  final IconData favoriteIcon;
+  final bool isFavorite;
+  IconData get favoriteIcon =>
+      isFavorite ? Icons.favorite : Icons.favorite_outline;
 
   MovieDetailsPosterData({
     this.backdropPath,
     this.posterPath,
-    this.favoriteIcon = Icons.favorite_outline,
+    this.isFavorite = false,
   });
+
+  MovieDetailsPosterData copyWith({
+    String? backdropPath,
+    String? posterPath,
+    bool? isFavorite,
+  }) {
+    return MovieDetailsPosterData(
+      backdropPath: backdropPath ?? this.backdropPath,
+      posterPath: posterPath ?? this.posterPath,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 }
 
 class MovieNameData {
@@ -80,45 +90,31 @@ class MovieDetailsData {
 
 class MovieDetailsModel extends ChangeNotifier {
   final _authService = AuthService();
-  final _sessionDataProvider = SessionDataProvider();
-  final _movieApiClient = MovieApiClient();
-  final _accountApiClient = AccountApiClient();
+  final _movieService = MovieService();
 
   final data = MovieDetailsData();
 
   final int movieId;
-  String _locale = '';
-  MovieDetails? _movieDetails;
-  bool _isFavorite = false;
+
+  final _localeStorage = LocalizedModelStorage();
   late DateFormat _dateFormat;
+  MovieDetailsModel(
+    this.movieId,
+  );
 
-  MovieDetails? get movieDetails => _movieDetails;
-  bool get isFavorite => _isFavorite;
-
-  MovieDetailsModel({
-    required this.movieId,
-  });
-
-  Future<void> setUpLocale(BuildContext context) async {
-    final locale = Localizations.localeOf(context).toLanguageTag();
-    if (_locale == locale) return;
-    _locale = locale;
-    _dateFormat = DateFormat.yMMMMd(locale);
+  Future<void> setUpLocale(BuildContext context, Locale locale) async {
+    if (!_localeStorage.updateLocale(locale)) return;
+    _dateFormat = DateFormat.yMMMMd(_localeStorage.localeTag);
     updateData(null, false);
+
     await getMovieDetails(context);
   }
 
-  String stringFromDate(DateTime dateTime) =>
-      dateTime != null ? _dateFormat.format(dateTime) : '';
-
   Future<void> getMovieDetails(BuildContext context) async {
     try {
-      _movieDetails = await _movieApiClient.movieDetails(movieId, _locale);
-      final sessionId = await _sessionDataProvider.getSessionId();
-      if (sessionId != null) {
-        _isFavorite = await _movieApiClient.isFavorite(movieId, sessionId);
-      }
-      updateData(_movieDetails, _isFavorite);
+      final movieDetails = await _movieService.getMovieDetails(
+          movieId: movieId, locale: _localeStorage.localeTag);
+      updateData(movieDetails.details, movieDetails.isFavorite);
     } on ApiClientException catch (e) {
       _handleApiClientException(e, context);
     }
@@ -133,9 +129,8 @@ class MovieDetailsModel extends ChangeNotifier {
     }
     data.overview = details.overview ?? '';
 
-    final iconData = isFavorite ? Icons.favorite : Icons.favorite_outline;
     data.posterData = MovieDetailsPosterData(
-      favoriteIcon: iconData,
+      isFavorite: isFavorite,
       backdropPath: details.backdropPath,
       posterPath: details.posterPath,
     );
@@ -144,9 +139,9 @@ class MovieDetailsModel extends ChangeNotifier {
     year = year != null ? ' ($year)' : '';
     data.nameData = MovieNameData(name: details.title, year: year);
 
-    final videos = movieDetails?.videos.results
+    final videos = details.videos.results
         .where((video) => video.type == 'Trailer' && video.site == 'Youtube');
-    final trailerKey = videos?.isNotEmpty == true ? videos?.first.key : null;
+    final trailerKey = videos.isNotEmpty == true ? videos.first.key : null;
     data.scoreData = MovieScoreData(
         voteAverage: details.voteAverage, trailerKey: trailerKey);
 
@@ -200,20 +195,11 @@ class MovieDetailsModel extends ChangeNotifier {
   }
 
   Future<void> toggleFavorite(BuildContext context) async {
-    final accountId = await _sessionDataProvider.getAccountId();
-    final sessionId = await _sessionDataProvider.getSessionId();
-
-    if (accountId == null || sessionId == null) return;
-
-    _isFavorite = !_isFavorite;
+    data.posterData.copyWith(isFavorite: !data.posterData.isFavorite);
     notifyListeners();
     try {
-      await _accountApiClient.markAsFavorite(
-          accountId: accountId,
-          sessionId: sessionId,
-          mediaType: MediaType.movie,
-          mediaId: movieId,
-          isFavorite: _isFavorite);
+      await _movieService.updateFavorite(
+          movieId: movieId, isFavorite: data.posterData.isFavorite);
     } on ApiClientException catch (e) {
       _handleApiClientException(e, context);
     }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:lesson3/domain/entity/movie.dart';
 
 import 'package:lesson3/domain/services/movie_service.dart';
+import 'package:lesson3/library/widgets/localized_model.dart';
 import 'package:lesson3/library/widgets/paginator.dart';
 import 'package:lesson3/ui/navigator/main_navigator.dart';
 
@@ -29,10 +30,11 @@ class MovieListViewModel extends ChangeNotifier {
   late Paginator<Movie> _popularMoviePaginator;
   late Paginator<Movie> _searchMoviePaginator;
   Timer? searchDebounce;
-  String _locale = '';
 
   var _movies = <MovieListRowData>[];
   String? _searchQuery;
+
+  final _localeStorage = LocalizedModelStorage();
 
   List<MovieListRowData> get movies => List.unmodifiable(_movies);
   late DateFormat _dateFormat;
@@ -44,7 +46,8 @@ class MovieListViewModel extends ChangeNotifier {
 
   MovieListViewModel() {
     _popularMoviePaginator = Paginator<Movie>((page) async {
-      final result = await _movieService.popularMovie(page, _locale);
+      final result =
+          await _movieService.popularMovie(page, _localeStorage.localeTag);
       return PaginatorLoadResult(
           data: result.movies,
           currentPage: result.page,
@@ -52,8 +55,8 @@ class MovieListViewModel extends ChangeNotifier {
     });
 
     _searchMoviePaginator = Paginator<Movie>((page) async {
-      final result =
-          await _movieService.searchMovie(page, _locale, _searchQuery ?? '');
+      final result = await _movieService.searchMovie(
+          page, _localeStorage.localeTag, _searchQuery ?? '');
       return PaginatorLoadResult(
           data: result.movies,
           currentPage: result.page,
@@ -61,11 +64,9 @@ class MovieListViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> setUpLocale(BuildContext context) async {
-    final locale = Localizations.localeOf(context).toLanguageTag();
-    if (_locale == locale) return;
-    _locale = locale;
-    _dateFormat = DateFormat.yMMMMd(locale);
+  Future<void> setUpLocale(Locale locale) async {
+    if (!_localeStorage.updateLocale(locale)) return;
+    _dateFormat = DateFormat.yMMMMd(_localeStorage.localeTag);
 
     await _resetList();
   }
