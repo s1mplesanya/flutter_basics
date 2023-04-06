@@ -82,9 +82,12 @@ class _MovieListRow extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Stack(
-        children: [
-          Container(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          onTap: () => model.onMovieTap(context, index),
+          child: Container(
             decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Colors.black.withOpacity(0.2)),
@@ -146,14 +149,7 @@ class _MovieListRow extends StatelessWidget {
               ],
             ),
           ),
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              onTap: () => model.onMovieTap(context, index),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }

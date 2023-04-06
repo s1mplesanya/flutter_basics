@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import '../Theme/app_colors.dart';
-import '../ui/navigator/main_navigator.dart';
+import 'package:lesson3/Theme/app_colors.dart';
+import 'package:lesson3/ui/navigator/main_navigator.dart';
 
 class MyApp extends StatelessWidget {
   static final mainNavigation = MainNavigation();

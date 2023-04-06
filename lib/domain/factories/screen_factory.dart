@@ -33,7 +33,7 @@ class ScreenFactory {
 
   Widget makeMovieDetails(int movieId) {
     return ChangeNotifierProvider(
-      create: (_) => MovieDetailsModel(movieId: movieId),
+      create: (_) => MovieDetailsModel(movieId),
       child: const MovieDetailsWidget(),
     );
   }
